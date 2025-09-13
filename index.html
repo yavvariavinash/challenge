@@ -30,6 +30,7 @@
     table{width:100%;border-collapse:collapse;margin-top:12px;}
     th,td{padding:8px;border-bottom:1px solid #e5e7eb;text-align:left;font-size:14px;}
     th{background:#f9fafb;}
+    .add-order-form{margin-top:16px;}
   </style>
 </head>
 <body>
@@ -87,6 +88,18 @@
             </thead>
             <tbody id="ordersTable"></tbody>
           </table>
+
+          <form id="addOrderForm" class="add-order-form">
+            <input type="text" name="customer" placeholder="Customer Name" required>
+            <select name="status" required>
+              <option value="">Select Status</option>
+              <option>Received</option>
+              <option>Shipped</option>
+              <option>Delivered</option>
+            </select>
+            <button class="btn" type="submit">Add Order</button>
+          </form>
+          <div id="orderMsg" class="muted" style="margin-top:10px;"></div>
         </div>
       </section>
     </main>
@@ -134,7 +147,7 @@
       document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
     }
 
-    dashboardLink.onclick=()=>{showSection(dashboardSection);dashboardLink.classList.add('active');};
+    dashboardLink.onclick=()=>{showSection(dashboardSection);dashboardLink.classList.add('active');updateDashboard();};
     partnerLink.onclick=()=>{showSection(partnerSection);partnerLink.classList.add('active');};
     ordersLink.onclick=()=>{showSection(ordersSection);ordersLink.classList.add('active');renderOrders();};
 
@@ -146,6 +159,21 @@
       const name=formData.get('name');
       document.getElementById('partnerMsg').textContent=`Thank you, ${name}. Your registration is received.`;
       partnerForm.reset();
+    };
+
+    // Add order form
+    const addOrderForm=document.getElementById('addOrderForm');
+    addOrderForm.onsubmit=(e)=>{
+      e.preventDefault();
+      const formData=new FormData(addOrderForm);
+      const customer=formData.get('customer');
+      const status=formData.get('status');
+      const newOrder={id:orders.length+1,customer:customer,status:status};
+      orders.push(newOrder);
+      document.getElementById('orderMsg').textContent=`Order for ${customer} added.`;
+      addOrderForm.reset();
+      renderOrders();
+      updateDashboard();
     };
 
     updateDashboard();
