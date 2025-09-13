@@ -3,281 +3,277 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Online Shopping — Delivery Dashboard</title>
+  <title>Delivery Shops — Dashboard</title>
   <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body,#app{height:100%}
-    body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:#f7fafc;color:#0f172a}
-
-    .app{display:grid;grid-template-columns:260px 1fr;grid-template-rows:64px 1fr;gap:18px;padding:18px;height:100vh}
-    .sidebar{grid-row:1/span 2;background:#111827;color:#fff;border-radius:12px;padding:18px;display:flex;flex-direction:column}
-    .logo{font-weight:800;font-size:18px}
-    .nav{margin-top:18px;display:flex;flex-direction:column;gap:8px}
-    .nav a{padding:10px;border-radius:8px;color:#cbd5e1;text-decoration:none}
-    .nav a:hover,.nav a.active{background:#0ea5a4;color:#fff}
-
-    .topbar{grid-column:2;grid-row:1;display:flex;align-items:center;justify-content:space-between}
-    .search input{padding:10px 12px;border-radius:10px;border:1px solid #e6eef6;min-width:300px}
-    .profile{display:flex;gap:12px;align-items:center}
-    .avatar{width:44px;height:44px;border-radius:999px;background:#e2e8f0;display:flex;align-items:center;justify-content:center}
-
-    .content{grid-column:2;grid-row:2;display:flex;flex-direction:column;gap:16px}
-    .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-    .card{background:white;padding:14px;border-radius:10px;box-shadow:0 8px 20px rgba(2,6,23,0.06)}
-    .card h4{font-size:13px;color:#64748b;margin-bottom:6px}
-    .card p{font-size:20px;font-weight:700}
-
-    .panels{display:grid;grid-template-columns:2fr 1fr;gap:12px}
-    .panel{background:white;padding:14px;border-radius:10px;box-shadow:0 8px 20px rgba(2,6,23,0.06)}
-    table{width:100%;border-collapse:collapse}
-    th,td{padding:10px;text-align:left;border-bottom:1px solid #eef2f7}
-    th{font-weight:700;color:#374151}
-    .muted{color:#6b7280}
-    .small{font-size:13px}
-    .btn{padding:8px 10px;border-radius:8px;border:none;cursor:pointer}
-    .btn.ghost{background:transparent;border:1px solid #e6eef6}
-    .btn.primary{background:#0ea5a4;color:white}
-
-    .badge{padding:6px 10px;border-radius:999px;font-weight:700;font-size:12px}
-    .badge.pending{background:#fff7ed;color:#92400e}
-    .badge.dispatched{background:#fff1f2;color:#9f1239}
-    .badge.intransit{background:#eef2ff;color:#1e40af}
-    .badge.delivered{background:#ecfdf5;color:#065f46}
-
-    .couriers{display:flex;flex-direction:column;gap:8px}
-    .courier{display:flex;align-items:center;gap:12px;padding:10px;border-radius:10px;border:1px solid #eef2f6}
-
-    .table-wrap{overflow:auto;max-height:420px}
-
-    @media (max-width:980px){
-      .app{grid-template-columns:1fr;grid-template-rows:64px auto 1fr}
-      .sidebar{grid-row:2}
-      .topbar{grid-column:1}
-      .content{grid-column:1}
-      .cards{grid-template-columns:repeat(2,1fr)}
-      .panels{grid-template-columns:1fr}
+    :root{
+      --bg:#0f1724; --card:#0b1220; --muted:#9aa4b2; --accent:#06b6d4; --glass:rgba(255,255,255,0.03);
+      --radius:12px; --gap:14px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
     }
+    *{box-sizing:border-box}
+    html,body,#app{height:100%;}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#071127);color:#e6eef6}
+    .wrap{display:grid;grid-template-columns:280px 1fr;gap:var(--gap);height:100vh;padding:18px}
+
+    /* Sidebar */
+    .sidebar{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:18px;border-radius:16px;box-shadow:0 6px 18px rgba(2,6,23,0.6);overflow:auto}
+    .brand{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+    .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:700}
+    h1{font-size:18px;margin:0}
+    .search{margin:12px 0}
+    .search input{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
+    .shops{margin-top:12px}
+    .shop{padding:10px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .shop:hover{background:var(--glass)}
+    .shop.active{background:rgba(6,182,212,0.12);box-shadow:inset 0 0 0 1px rgba(6,182,212,0.06)}
+    .shop img{width:36px;height:36px;border-radius:8px;object-fit:cover}
+    .muted{color:var(--muted);font-size:13px}
+
+    /* Main */
+    .main{display:flex;flex-direction:column;gap:12px}
+    .topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--card);border-radius:12px}
+    .controls{display:flex;gap:8px;align-items:center}
+    .controls select,.controls button{padding:8px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:10px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:12px;border-radius:12px;cursor:pointer;display:flex;flex-direction:column;gap:8px}
+    .card img{width:100%;height:140px;object-fit:cover;border-radius:8px}
+    .card .title{font-weight:600}
+    .meta{display:flex;justify-content:space-between;align-items:center}
+
+    /* Details panel */
+    .details{position:fixed;right:18px;top:18px;width:420px;max-width:92%;height:calc(100vh - 36px);background:linear-gradient(180deg,#071327,rgba(7,18,39,0.6));backdrop-filter:blur(8px);border-radius:14px;padding:16px;box-shadow:0 10px 40px rgba(2,6,23,0.7);overflow:auto;transform:translateX(20px);transition:transform .22s ease,opacity .22s ease;opacity:0;pointer-events:none}
+    .details.open{transform:translateX(0);opacity:1;pointer-events:auto}
+    .details .head{display:flex;align-items:center;gap:12px}
+    .details img{width:120px;height:88px;object-fit:cover;border-radius:8px}
+    .badge{padding:6px 8px;border-radius:8px;background:rgba(255,255,255,0.03);font-size:13px}
+
+    /* Responsive */
+    @media (max-width:880px){.wrap{grid-template-columns:1fr;padding:12px}.sidebar{order:2;height:40vh}.details{width:100%;left:0;right:0;bottom:0;top:auto;height:55vh;border-radius:14px 14px 0 0}}
+
+    /* small helpers */
+    .muted-small{color:var(--muted);font-size:12px}
+    .btn{padding:8px 10px;border-radius:10px;border:none;background:var(--accent);color:#032;
+      cursor:pointer;font-weight:600}
+    .pill{padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.03);font-size:13px}
   </style>
 </head>
 <body>
-  <div id="app" class="app">
+  <div id="app" class="wrap">
     <aside class="sidebar">
-      <div class="logo">🛒 ShopShip Dashboard</div>
-      <nav class="nav">
-        <a class="active" href="#">Overview</a>
-        <a href="#">Orders</a>
-        <a href="#">Shipments</a>
-        <a href="#">Couriers</a>
-        <a href="#">Inventory</a>
-        <a href="#">Settings</a>
-      </nav>
-      <div style="margin-top:auto;font-size:13px;color:#cbd5e1">Demo · Local only</div>
+      <div class="brand">
+        <div class="logo">DS</div>
+        <div>
+          <h1>Delivery Shops</h1>
+          <div class="muted">Manage collections • browse products</div>
+        </div>
+      </div>
+
+      <div class="search">
+        <input id="searchInput" placeholder="Search products or shops..." />
+      </div>
+
+      <div class="shops">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div class="muted">Shops</div>
+          <div class="muted-small" id="shopCount">0</div>
+        </div>
+        <div id="shopsList"></div>
+      </div>
     </aside>
 
-    <header class="topbar">
-      <div class="search">
-        <input id="globalSearch" placeholder="Search order ID, product, customer, address..." />
-      </div>
-      <div class="profile">
-        <div class="small muted">Admin</div>
-        <div class="avatar">AS</div>
-      </div>
-    </header>
-
-    <main class="content">
-      <section class="cards">
-        <div class="card"><h4>Orders (24h)</h4><p id="statOrders">—</p><div class="small muted">Recent</div></div>
-        <div class="card"><h4>Revenue</h4><p id="statRevenue">—</p><div class="small muted">Today</div></div>
-        <div class="card"><h4>Shipments In Transit</h4><p id="statInTransit">—</p><div class="small muted">Active</div></div>
-        <div class="card"><h4>Available Couriers</h4><p id="statCouriers">—</p><div class="small muted">Ready</div></div>
-      </section>
-
-      <section class="panels">
-        <div class="panel">
-          <h3>Recent Orders</h3>
-          <div style="display:flex;gap:8px;margin:12px 0;align-items:center">
-            <select id="filterStatus" class="small">
-              <option value="all">All</option>
-              <option value="pending">Pending</option>
-              <option value="dispatched">Dispatched</option>
-              <option value="intransit">In Transit</option>
-              <option value="delivered">Delivered</option>
-            </select>
-            <button id="exportCsv" class="btn ghost small">Export CSV</button>
-            <div style="margin-left:auto" class="muted small">Updated: <span id="lastUpdated">—</span></div>
-          </div>
-
-          <div class="table-wrap">
-            <table id="ordersTable">
-              <thead>
-                <tr><th>Order</th><th>Customer</th><th>Items</th><th>Amount</th><th>Status</th><th>Courier</th><th>Actions</th></tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
+    <main class="main">
+      <div class="topbar">
+        <div style="display:flex;gap:10px;align-items:center">
+          <div class="muted">Showing</div>
+          <div id="resultCount" class="pill">0 products</div>
         </div>
-
-        <div class="panel">
-          <h3>Couriers</h3>
-          <div id="couriersList" class="couriers"></div>
-          <div style="height:12px"></div>
-          <h4 class="small muted">Inventory alerts</h4>
-          <ul id="inventoryAlerts" class="small muted"></ul>
+        <div class="controls">
+          <select id="sortSelect"><option value="newest">Newest</option><option value="priceAsc">Price ↑</option><option value="priceDesc">Price ↓</option></select>
+          <button id="clearFilters" class="muted-small">Clear</button>
         </div>
-      </section>
+      </div>
+
+      <div class="grid" id="productGrid"></div>
+
+      <div style="margin-top:12px;color:var(--muted);font-size:13px">Tip: click any product to open the details panel. Use search to filter across shops & products.</div>
     </main>
+
+    <section id="detailsPanel" class="details" aria-hidden="true">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div class="muted">Product details</div>
+        <button id="closeDetails" class="muted-small">Close</button>
+      </div>
+      <div id="detailsContent"></div>
+    </section>
   </div>
 
-  <div id="modalRoot" style="display:none"></div>
-
   <script>
-    // Sample data (Bharath added)
-    const sampleCouriers = [
-      {id:'c1', name:'Vikram', vehicle:'Bike', status:'available'},
-      {id:'c2', name:'Neha', vehicle:'Van', status:'on-delivery'},
-      {id:'c3', name:'Sunil', vehicle:'Bike', status:'available'},
-      {id:'c4', name:'Bharath', vehicle:'Scooter', status:'available'}, // <-- new courier
-    ];
-
-    const sampleOrders = [
-      {id:2001, customer:'Rohit Sharma', items:['Wireless Mouse','USB Cable'], amount:1299, status:'pending', courierId:null, placedAt:'2025-09-10 08:20'},
-      {id:2002, customer:'Kavita Patel', items:['Running Shoes'], amount:3499, status:'dispatched', courierId:'c2', placedAt:'2025-09-10 07:50'},
-      {id:2003, customer:'Anmol', items:['Sunglasses'], amount:799, status:'intransit', courierId:'c2', placedAt:'2025-09-09 22:10'},
-      {id:2004, customer:'Leena', items:['T-shirt','Cap'], amount:1199, status:'delivered', courierId:'c1', placedAt:'2025-09-09 15:40'},
-      {id:2005, customer:'Aakash', items:['Bluetooth Speaker'], amount:2199, status:'pending', courierId:null, placedAt:'2025-09-10 09:05'},
-    ];
-
-    const sampleInventory = [
-      {sku:'SKU-101', name:'Wireless Mouse', qty:3},
-      {sku:'SKU-102', name:'Running Shoes', qty:12},
-      {sku:'SKU-103', name:'Bluetooth Speaker', qty:1},
-    ];
-
-    // State
-    let ORDERS = JSON.parse(localStorage.getItem('shop_orders')) || sampleOrders.slice();
-    let COURIERS = JSON.parse(localStorage.getItem('shop_couriers')) || sampleCouriers.slice();
-    let INVENTORY = JSON.parse(localStorage.getItem('shop_inventory')) || sampleInventory.slice();
-
-    // Helpers
-    const byId = id => document.getElementById(id);
-    function formatCurrency(n){return '₹' + n.toFixed(0)}
-    function nowISO(){return new Date().toLocaleString()}
-
-    // Render stats
-    function renderStats(){
-      byId('statOrders').innerText = ORDERS.length;
-      byId('statRevenue').innerText = formatCurrency(ORDERS.reduce((s,o)=>s+o.amount,0));
-      byId('statInTransit').innerText = ORDERS.filter(o=>o.status==='intransit').length;
-      byId('statCouriers').innerText = COURIERS.filter(c=>c.status==='available').length;
-      byId('lastUpdated').innerText = nowISO();
+    // Sample data: shops and products
+    const data = {
+      shops: [
+        {id: 's1', name: 'GreenBite Foods', logo: '', city: 'Mumbai'},
+        {id: 's2', name: 'QuickCrate Delivery', logo: '', city: 'Bengaluru'},
+        {id: 's3', name: 'Urban Snacks', logo: '', city: 'Delhi'}
+      ],
+      products: [
+        {id:'p1',shopId:'s1',title:'Farmhouse Sandwich',desc:'Fresh veg sandwich with lettuce, tomato & cheese',price:199,delivery:25,eta:'30-40 mins',img:'https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=900&q=60',tags:['veg','sandwich'],createdAt:'2025-08-07'},
+        {id:'p2',shopId:'s1',title:'Protein Salad Bowl',desc:'Quinoa, chickpeas, avocado & seasonal greens',price:349,delivery:40,eta:'25-35 mins',img:'https://images.unsplash.com/photo-1542444459-db6f0b1a19f0?auto=format&fit=crop&w=900&q=60',tags:['salad','healthy'],createdAt:'2025-09-02'},
+        {id:'p3',shopId:'s2',title:'Classic Cheese Pizza',desc:'12" cheese pizza with house tomato sauce',price:499,delivery:60,eta:'40-55 mins',img:'https://images.unsplash.com/photo-1548365328-6d9b5e3f94a6?auto=format&fit=crop&w=900&q=60',tags:['pizza'],createdAt:'2025-06-15'},
+        {id:'p4',shopId:'s3',title:'Spicy Paneer Wrap',desc:'Tandoori paneer, onions, mint chutney wrapped in roti',price:179,delivery:30,eta:'20-30 mins',img:'https://images.unsplash.com/photo-1604908177522-6a4bd97d4b2f?auto=format&fit=crop&w=900&q=60',tags:['veg','wrap'],createdAt:'2025-09-10'},
+        {id:'p5',shopId:'s2',title:'Chicken Biryani',desc:'Handi-style chicken biryani with raita',price:299,delivery:50,eta:'45-60 mins',img:'https://images.unsplash.com/photo-1604908177594-c4b1a0a0b3d3?auto=format&fit=crop&w=900&q=60',tags:['non-veg','rice'],createdAt:'2025-07-20'}
+      ]
     }
 
-    function renderOrders(filter='all', search=''){
-      const tbody = document.querySelector('#ordersTable tbody'); tbody.innerHTML='';
-      const rows = ORDERS.filter(o=> filter==='all' ? true : o.status===filter)
-                         .filter(o=>{ if(!search) return true; const s=search.toLowerCase(); return (''+o.id).includes(s) || o.customer.toLowerCase().includes(s) || o.items.join(' ').toLowerCase().includes(s); });
-      rows.forEach(o=>{
-        const tr = document.createElement('tr');
-        const courier = COURIERS.find(c=>c.id===o.courierId);
-        tr.innerHTML = `
-          <td>#${o.id}</td>
-          <td>${o.customer}</td>
-          <td class="small muted">${o.items.join(', ')}</td>
-          <td>${formatCurrency(o.amount)}</td>
-          <td>${statusHtml(o.status)}</td>
-          <td>${courier ? courier.name : '<span class="muted small">—</span>'}</td>
-          <td>
-            <button class="btn ghost small" data-action="view" data-id="${o.id}">View</button>
-            <button class="btn primary small" data-action="assign" data-id="${o.id}">${o.courierId? 'Reassign' : 'Assign'}</button>
-          </td>`;
-        tbody.appendChild(tr);
-      });
+    // App state
+    let state = {
+      selectedShop: null,
+      search: '',
+      sort: 'newest',
+      selectedProduct: null
     }
 
-    function statusHtml(s){
-      if(s==='pending') return '<span class="badge pending">Pending</span>';
-      if(s==='dispatched') return '<span class="badge dispatched">Dispatched</span>';
-      if(s==='intransit') return '<span class="badge intransit">In Transit</span>';
-      if(s==='delivered') return '<span class="badge delivered">Delivered</span>';
-      return s;
+    // Utility helpers
+    const $ = (id)=>document.getElementById(id)
+
+    function init(){
+      renderShops();
+      renderProducts();
+      setupEvents();
     }
 
-    function renderCouriers(){
-      const wrap = byId('couriersList'); wrap.innerHTML='';
-      COURIERS.forEach(c=>{
-        const el = document.createElement('div'); el.className='courier';
-        el.innerHTML = `<div style="width:44px;height:44px;border-radius:999px;background:#eef2ff;display:flex;align-items:center;justify-content:center;font-weight:700">${c.name.split(' ').map(x=>x[0]).slice(0,2).join('')}</div>
-                        <div style="flex:1">
-                          <div style="font-weight:700">${c.name}</div>
-                          <div class="small muted">${c.vehicle} · ${c.status}</div>
-                        </div>
-                        <div><button class="btn ghost small" data-courier="${c.id}">Toggle</button></div>`;
-        wrap.appendChild(el);
-      });
-    }
-
-    function renderInventoryAlerts(){
-      const ul = byId('inventoryAlerts'); ul.innerHTML='';
-      INVENTORY.filter(i=>i.qty<=3).forEach(i=>{
-        const li = document.createElement('li'); li.innerText = `${i.name} (${i.sku}) — low stock: ${i.qty}`; ul.appendChild(li);
-      });
-    }
-
-    // Modal
-    function openModal(html){ const root = byId('modalRoot'); root.style.display='block'; root.innerHTML = `<div class="modal-backdrop" style="position:fixed;inset:0;background:rgba(2,6,23,0.45);display:flex;align-items:center;justify-content:center" onclick="closeModal(event)"><div style="background:white;border-radius:12px;padding:16px;width:92%;max-width:720px" onclick="event.stopPropagation()">${html}</div></div>` }
-    function closeModal(){ const root=byId('modalRoot'); root.style.display='none'; root.innerHTML=''; }
-
-    function showOrderDetails(id){
-      const o = ORDERS.find(x=>x.id==id); if(!o) return alert('Order missing');
-      const courierOptions = COURIERS.map(c=>`<option value="${c.id}" ${c.id===o.courierId? 'selected':''}>${c.name} — ${c.status}</option>`).join('');
-      openModal(`
-        <h3>Order #${o.id}</h3>
-        <div style="display:flex;gap:14px;margin-top:10px">
+    function renderShops(){
+      const list = $('shopsList');
+      list.innerHTML = '';
+      data.shops.forEach(s=>{
+        const el = document.createElement('div');
+        el.className = 'shop';
+        el.dataset.id = s.id;
+        el.innerHTML = ` <img src="https://avatars.dicebear.com/api/identicon/${s.name}.svg" alt="${s.name}" />
           <div style="flex:1">
-            <div><strong>Customer:</strong> ${o.customer}</div>
-            <div><strong>Items:</strong> ${o.items.join(', ')}</div>
-            <div><strong>Amount:</strong> ${formatCurrency(o.amount)}</div>
-            <div style="margin-top:8px"><strong>Status:</strong> ${statusHtml(o.status)}</div>
-          </div>
-          <div style="width:240px">
-            <label class="small muted">Assign courier</label>
-            <select id="modalCourierSelect" style="width:100%;padding:8px;border-radius:8px;margin-top:6px">${courierOptions}</select>
-            <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
-              <button class="btn ghost" onclick="closeModal()">Cancel</button>
-              <button class="btn primary" onclick="assignCourier(${o.id})">Assign</button>
+            <div style="font-weight:600">${s.name}</div>
+            <div class="muted-small">${s.city}</div>
+          </div>`
+        el.addEventListener('click',()=>{
+          if(state.selectedShop === s.id) state.selectedShop = null;
+          else state.selectedShop = s.id;
+          renderShops(); renderProducts();
+        })
+        if(state.selectedShop === s.id) el.classList.add('active');
+        list.appendChild(el);
+      })
+      $('shopCount').innerText = data.shops.length
+    }
+
+    function filterProducts(){
+      let items = [...data.products];
+      if(state.selectedShop) items = items.filter(p=>p.shopId===state.selectedShop);
+      if(state.search){
+        const q = state.search.toLowerCase();
+        items = items.filter(p=> p.title.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q) || (getShop(p.shopId).name.toLowerCase().includes(q)) )
+      }
+      if(state.sort === 'priceAsc') items.sort((a,b)=>a.price-b.price);
+      else if(state.sort === 'priceDesc') items.sort((a,b)=>b.price-a.price);
+      else items.sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
+      return items;
+    }
+
+    function renderProducts(){
+      const grid = $('productGrid');
+      const items = filterProducts();
+      grid.innerHTML = '';
+      $('resultCount').innerText = `${items.length} products`;
+      items.forEach(p=>{
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.tabIndex = 0;
+        card.innerHTML = `
+          <img src="${p.img}" alt="${p.title}" />
+          <div style="display:flex;justify-content:space-between;align-items:start">
+            <div>
+              <div class="title">${p.title}</div>
+              <div class="muted-small">${getShop(p.shopId).name} • ${p.tags.join(', ')}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:700">₹${p.price}</div>
+              <div class="muted-small">${p.eta}</div>
             </div>
           </div>
+        `
+        card.addEventListener('click',()=>openDetails(p.id));
+        grid.appendChild(card);
+      })
+    }
+
+    function getShop(id){return data.shops.find(s=>s.id===id) || {name:'Unknown'} }
+
+    function openDetails(productId){
+      const p = data.products.find(x=>x.id===productId);
+      if(!p) return;
+      state.selectedProduct = p.id;
+      const panel = $('detailsPanel');
+      const content = $('detailsContent');
+      content.innerHTML = `
+        <div class="head">
+          <img src="${p.img}" alt="${p.title}" />
+          <div style="flex:1">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div style="font-size:18px;font-weight:700">${p.title}</div>
+              <div class="badge">₹${p.price}</div>
+            </div>
+            <div class="muted-small" style="margin-top:6px">${getShop(p.shopId).name} — ${getShop(p.shopId).city}</div>
+            <div style="margin-top:8px" class="muted">${p.desc}</div>
+          </div>
         </div>
-      `);
+
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+          <div class="pill">Delivery: ${p.delivery} ₹</div>
+          <div class="pill">ETA: ${p.eta}</div>
+          <div class="pill">Tags: ${p.tags.join(', ')}</div>
+          <div class="pill">Added: ${p.createdAt}</div>
+        </div>
+
+        <div style="margin-top:14px;display:flex;gap:8px;align-items:center">
+          <button class="btn" id="orderNow">Order Now</button>
+          <button class="muted-small" id="addCart">Add to Cart</button>
+          <div style="margin-left:auto" class="muted-small">Product ID: ${p.id}</div>
+        </div>
+
+        <hr style="margin:12px 0;border:0;border-top:1px solid rgba(255,255,255,0.03)" />
+        <div class="muted-small">Shop Details</div>
+        <div style="margin-top:8px">
+          <div style="font-weight:700">${getShop(p.shopId).name}</div>
+          <div class="muted-small">City: ${getShop(p.shopId).city}</div>
+          <div class="muted-small">Contact: ${getShop(p.shopId).name.toLowerCase().replace(/\s/g,'')}@example.com</div>
+        </div>
+      `;
+      panel.classList.add('open');
+      panel.setAttribute('aria-hidden','false');
+
+      // wire buttons
+      setTimeout(()=>{
+        $('orderNow').onclick = ()=>{ alert('Order placed for: '+p.title + ' — demo only') }
+        $('addCart').onclick = ()=>{ alert('Added to cart: '+p.title + ' — demo only') }
+      },50)
     }
 
-    function assignCourier(orderId){
-      const sel = byId('modalCourierSelect'); const courierId = sel.value || null;
-      const idx = ORDERS.findIndex(o=>o.id==orderId); if(idx===-1) return;
-      ORDERS[idx].courierId = courierId; if(courierId) ORDERS[idx].status = 'intransit';
-      persist(); closeModal(); renderAll();
+    function closeDetails(){
+      const panel = $('detailsPanel');
+      panel.classList.remove('open');
+      panel.setAttribute('aria-hidden','true');
+      state.selectedProduct = null;
     }
 
-    function toggleCourier(id){ const i = COURIERS.findIndex(c=>c.id===id); if(i===-1) return; COURIERS[i].status = COURIERS[i].status==='available' ? 'on-delivery' : 'available'; persist(); renderAll(); }
-
-    // Export CSV
-    function exportCSV(){
-      const header = ['Order ID','Customer','Items','Amount','Status','Courier','Placed At'];
-      const rows = ORDERS.map(o=>[o.id, o.customer, `"${o.items.join('; ')}"`, o.amount, o.status, (COURIERS.find(c=>c.id===o.courierId)||{}).name||'', o.placedAt]);
-      const csv = [header.join(','), ...rows.map(r=>r.join(','))].join('\n');
-      const blob = new Blob([csv], {type:'text/csv'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href=url; a.download='shop_orders.csv'; a.click(); URL.revokeObjectURL(url);
+    function setupEvents(){
+      $('searchInput').addEventListener('input',(e)=>{ state.search = e.target.value; renderProducts(); });
+      $('sortSelect').addEventListener('change',(e)=>{ state.sort = e.target.value; renderProducts(); });
+      $('clearFilters').addEventListener('click',()=>{ state.selectedShop=null; state.search=''; $('searchInput').value=''; state.sort='newest'; $('sortSelect').value='newest'; renderShops(); renderProducts(); })
+      $('closeDetails').addEventListener('click',closeDetails);
+      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeDetails(); })
     }
 
-    // Persistence
-    function persist(){ localStorage.setItem('shop_orders', JSON.stringify(ORDERS)); localStorage.setItem('shop_couriers', JSON.stringify(COURIERS)); localStorage.setItem('shop_inventory', JSON.stringify(INVENTORY)); }
-
-    function renderAll(){ renderStats(); renderOrders(byId('filterStatus').value, byId('globalSearch').value.trim()); renderCouriers(); renderInventoryAlerts(); }
-
-    // Events
-    document.addEventListener('click', (e)=>{
-      const view = e.target.closest('[data-action="view"]'); const assign = e.target.closest('[data-action="assign"]'); const courierBtn = e.target.closest('[data-courier]');
-      if(view) showOrderDetails(view.dataset.id);
-      if(assign) showOrderDetails(assign.dataset.id);
-      if(courierBtn) toggleCourier(courierBtn.dataset.courier);
-   
- 
+    // init app
+    init();
+  </script>
+</body>
+</html>
