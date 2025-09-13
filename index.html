@@ -131,11 +131,12 @@
   <div id="modalRoot" style="display:none"></div>
 
   <script>
-    // Sample data
+    // Sample data (Bharath added)
     const sampleCouriers = [
       {id:'c1', name:'Vikram', vehicle:'Bike', status:'available'},
       {id:'c2', name:'Neha', vehicle:'Van', status:'on-delivery'},
       {id:'c3', name:'Sunil', vehicle:'Bike', status:'available'},
+      {id:'c4', name:'Bharath', vehicle:'Scooter', status:'available'}, // <-- new courier
     ];
 
     const sampleOrders = [
@@ -278,15 +279,4 @@
       if(view) showOrderDetails(view.dataset.id);
       if(assign) showOrderDetails(assign.dataset.id);
       if(courierBtn) toggleCourier(courierBtn.dataset.courier);
-    });
-    byId('filterStatus').addEventListener('change', ()=>renderAll());
-    byId('globalSearch').addEventListener('input', ()=>renderAll());
-    byId('exportCsv').addEventListener('click', exportCSV);
-
-    // init
-    renderAll();
-    // developer helper: window.resetShopDemo() to clear storage
-    window.resetShopDemo = function(){ localStorage.removeItem('shop_orders'); localStorage.removeItem('shop_couriers'); localStorage.removeItem('shop_inventory'); location.reload(); }
-  </script>
-</body>
-</html>
+   
