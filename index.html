@@ -1,236 +1,140 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Delivery Shops — Dashboard</title>
-  <style>
-    :root{
-      --bg:#0f1724; --card:#0b1220; --muted:#9aa4b2; --accent:#06b6d4; --glass:rgba(255,255,255,0.03);
-      --radius:12px; --gap:14px;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-    }
-    *{box-sizing:border-box}
-    html,body,#app{height:100%;}
-    body{margin:0;background:linear-gradient(180deg,var(--bg),#071127);color:#e6eef6}
-    .wrap{display:grid;grid-template-columns:280px 1fr;gap:var(--gap);height:100vh;padding:18px}
-
-    /* Sidebar */
-    .sidebar{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:18px;border-radius:16px;box-shadow:0 6px 18px rgba(2,6,23,0.6);overflow:auto}
-    .brand{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-    .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:700}
-    h1{font-size:18px;margin:0}
-    .search{margin:12px 0}
-    .search input{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
-    .shops{margin-top:12px}
-    .shop{padding:10px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:10px;margin-bottom:8px}
-    .shop:hover{background:var(--glass)}
-    .shop.active{background:rgba(6,182,212,0.12);box-shadow:inset 0 0 0 1px rgba(6,182,212,0.06)}
-    .shop img{width:36px;height:36px;border-radius:8px;object-fit:cover}
-    .muted{color:var(--muted);font-size:13px}
-
-    /* Main */
-    .main{display:flex;flex-direction:column;gap:12px;overflow:auto}
-    .topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--card);border-radius:12px;position:sticky;top:0;z-index:10}
-    .controls{display:flex;gap:8px;align-items:center}
-    .controls select,.controls button{padding:8px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
-
-    .banner-container{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;margin-top:10px}
-    .banner{border-radius:12px;overflow:hidden;cursor:pointer;position:relative}
-    .banner img{width:100%;height:160px;object-fit:cover;display:block}
-    .banner .label{position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.5);padding:6px 8px;border-radius:8px;font-size:13px}
-
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:10px}
-    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:12px;border-radius:12px;cursor:pointer;display:flex;flex-direction:column;gap:8px;transition:transform .2s ease}
-    .card:hover{transform:translateY(-3px)}
-    .card img{width:100%;height:140px;object-fit:cover;border-radius:8px}
-    .card .title{font-weight:600}
-    .meta{display:flex;justify-content:space-between;align-items:center}
-
-    /* Details panel */
-    .details{position:fixed;right:18px;top:18px;width:420px;max-width:92%;height:calc(100vh - 36px);background:linear-gradient(180deg,#071327,rgba(7,18,39,0.6));backdrop-filter:blur(8px);border-radius:14px;padding:16px;box-shadow:0 10px 40px rgba(2,6,23,0.7);overflow:auto;transform:translateX(20px);transition:transform .22s ease,opacity .22s ease;opacity:0;pointer-events:none;z-index:20}
-    .details.open{transform:translateX(0);opacity:1;pointer-events:auto}
-    .details .head{display:flex;align-items:center;gap:12px}
-    .details img{width:120px;height:88px;object-fit:cover;border-radius:8px}
-    .badge{padding:6px 8px;border-radius:8px;background:rgba(255,255,255,0.03);font-size:13px}
-
-    /* Responsive */
-    @media (max-width:880px){.wrap{grid-template-columns:1fr;padding:12px}.sidebar{order:2;height:40vh}.details{width:100%;left:0;right:0;bottom:0;top:auto;height:55vh;border-radius:14px 14px 0 0}}
-
-    /* small helpers */
-    .muted-small{color:var(--muted);font-size:12px}
-    .btn{padding:8px 10px;border-radius:10px;border:none;background:var(--accent);color:#032;cursor:pointer;font-weight:600}
-    .pill{padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.03);font-size:13px}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Delivery Shops Dashboard</title>
+<style>
+:root{
+  --bg:#f5f6f9;--card:#fff;--accent:#ff4b2b;--muted:#777;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:#222;}
+.wrap{display:grid;grid-template-columns:260px 1fr;height:100vh}
+.sidebar{background:#fff;padding:16px;overflow-y:auto;border-right:1px solid #eee}
+.brand{font-size:18px;font-weight:700;margin-bottom:12px}
+.search input{width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;margin-bottom:12px}
+.shop{padding:8px;border-radius:6px;cursor:pointer;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.shop:hover{background:#f1f1f1}
+.shop.active{background:rgba(255,75,43,0.1);border-left:3px solid var(--accent)}
+.shop img{width:36px;height:36px;border-radius:50%;object-fit:cover}
+.main{padding:16px;overflow-y:auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.pill{background:#eee;padding:4px 8px;border-radius:12px;font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid #eee;border-radius:8px;padding:8px;cursor:pointer;display:flex;flex-direction:column;gap:6px}
+.card img{width:100%;height:120px;object-fit:cover;border-radius:6px}
+.card .title{font-weight:600;font-size:15px}
+.card .meta{font-size:13px;color:var(--muted)}
+.details{position:fixed;right:0;top:0;width:360px;max-width:90%;height:100vh;background:#fff;border-left:1px solid #eee;box-shadow:-2px 0 8px rgba(0,0,0,0.05);padding:16px;overflow-y:auto;transform:translateX(100%);transition:.25s}
+.details.open{transform:translateX(0)}
+.details h2{font-size:18px;margin-bottom:6px}
+.details img{width:100%;border-radius:6px;margin-bottom:8px}
+.badge{display:inline-block;padding:3px 6px;border-radius:4px;background:rgba(255,75,43,0.1);color:var(--accent);font-size:12px}
+.close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;float:right}
+@media(max-width:768px){.wrap{grid-template-columns:1fr}.sidebar{position:fixed;z-index:2;height:100%;width:200px;transform:translateX(-200px);transition:.3s}.sidebar.open{transform:translateX(0)}}
+</style>
 </head>
 <body>
-  <div id="app" class="wrap">
-    <aside class="sidebar">
-      <div class="brand">
-        <div class="logo">DS</div>
-        <div>
-          <h1>Delivery Shops</h1>
-          <div class="muted">Manage collections • browse products</div>
-        </div>
-      </div>
+<div class="wrap">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">Delivery Companies</div>
+    <div class="search"><input id="searchInput" placeholder="Search products or companies"></div>
+    <div id="shopsList"></div>
+  </aside>
 
-      <div class="search">
-        <input id="searchInput" placeholder="Search products or shops..." />
-      </div>
+  <main class="main">
+    <div class="topbar">
+      <div>Products <span id="resultCount" class="pill">0</span></div>
+      <div><button onclick="clearFilters()">Clear Filters</button></div>
+    </div>
+    <div class="grid" id="productGrid"></div>
+  </main>
 
-      <div class="shops">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-          <div class="muted">Shops</div>
-          <div class="muted-small" id="shopCount">0</div>
-        </div>
-        <div id="shopsList"></div>
-      </div>
-    </aside>
+  <section class="details" id="detailsPanel">
+    <button class="close" onclick="closeDetails()">✕ Close</button>
+    <div id="detailsContent"></div>
+  </section>
+</div>
 
-    <main class="main">
-      <div class="topbar">
-        <div style="display:flex;gap:10px;align-items:center">
-          <div class="muted">Showing</div>
-          <div id="resultCount" class="pill">0 products</div>
-        </div>
-        <div class="controls">
-          <select id="sortSelect"><option value="newest">Newest</option><option value="priceAsc">Price ↑</option><option value="priceDesc">Price ↓</option></select>
-          <button id="clearFilters" class="muted-small">Clear</button>
-        </div>
-      </div>
+<script>
+const data={
+  shops:[
+    {id:'c1',name:'SpeedEx Couriers',city:'Mumbai'},
+    {id:'c2',name:'QuickShip Logistics',city:'Delhi'},
+    {id:'c3',name:'Bharath Couriers',city:'Hyderabad'},
+    {id:'c4',name:'Urban Express',city:'Bengaluru'}
+  ],
+  products:[
+    {id:'p1',shopId:'c1',title:'Small Parcel Delivery',desc:'Same day small parcel delivery service',price:199,eta:'2-4 hrs',img:'https://images.unsplash.com/photo-1598514982454-02729b1c0656?auto=format&fit=crop&w=600&q=60'},
+    {id:'p2',shopId:'c1',title:'Bulk Document Courier',desc:'Secure & fast document courier',price:99,eta:'1 day',img:'https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=600&q=60'},
+    {id:'p3',shopId:'c2',title:'Large Package Freight',desc:'Heavy packages up to 25kg',price:499,eta:'3-5 days',img:'https://images.unsplash.com/photo-1581090700227-4c4c9e0c3a0a?auto=format&fit=crop&w=600&q=60'},
+    {id:'p4',shopId:'c3',title:'Bharath Express',desc:'Fast delivery across South India',price:299,eta:'Next day',img:'https://images.unsplash.com/photo-1586374579640-949d135b4df0?auto=format&fit=crop&w=600&q=60'},
+    {id:'p5',shopId:'c4',title:'Urban Same-Day',desc:'Instant delivery within city',price:249,eta:'Few hours',img:'https://images.unsplash.com/photo-1561154464-82e9e41bdf83?auto=format&fit=crop&w=600&q=60'}
+  ]
+}
+let state={selectedShop:null,search:''}
 
-      <div class="banner-container" id="bannerContainer"></div>
+const $=id=>document.getElementById(id);
 
-      <div class="grid" id="productGrid"></div>
+function renderShops(){
+  const list=$('shopsList');
+  list.innerHTML='';
+  data.shops.forEach(s=>{
+    const el=document.createElement('div');
+    el.className='shop'+(state.selectedShop===s.id?' active':'');
+    el.innerHTML=`<img src="https://avatars.dicebear.com/api/initials/${s.name}.svg"><div><div>${s.name}</div><div style="font-size:12px;color:#777">${s.city}</div></div>`;
+    el.onclick=()=>{state.selectedShop=state.selectedShop===s.id?null:s.id;renderShops();renderProducts();}
+    list.appendChild(el);
+  });
+}
 
-      <div style="margin-top:12px;color:var(--muted);font-size:13px">Tip: click any product to open the details panel. Use search to filter across shops & products.</div>
-    </main>
+function filterProducts(){
+  let items=[...data.products];
+  if(state.selectedShop)items=items.filter(p=>p.shopId===state.selectedShop);
+  if(state.search){
+    const q=state.search.toLowerCase();
+    items=items.filter(p=>p.title.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q)||getShop(p.shopId).name.toLowerCase().includes(q));
+  }
+  return items;
+}
 
-    <section id="detailsPanel" class="details" aria-hidden="true">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <div class="muted">Product details</div>
-        <button id="closeDetails" class="muted-small">Close</button>
-      </div>
-      <div id="detailsContent"></div>
-    </section>
-  </div>
+function renderProducts(){
+  const grid=$('productGrid');
+  const items=filterProducts();
+  $('resultCount').textContent=items.length;
+  grid.innerHTML='';
+  items.forEach(p=>{
+    const card=document.createElement('div');
+    card.className='card';
+    card.innerHTML=`<img src="${p.img}"><div class="title">${p.title}</div><div class="meta">${getShop(p.shopId).name} • ₹${p.price} • ${p.eta}</div>`;
+    card.onclick=()=>openDetails(p.id);
+    grid.appendChild(card);
+  })
+}
 
-  <script>
-    // Sample data: shops and products
-    const data = {
-      banners:[
-        {img:'https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=900&q=60',label:'Flat 30% Off on First Order'},
-        {img:'https://images.unsplash.com/photo-1601924638867-3ec71d5b9cc6?auto=format&fit=crop&w=900&q=60',label:'Weekend Special Deals'},
-        {img:'https://images.unsplash.com/photo-1601315487780-7ff232f0df59?auto=format&fit=crop&w=900&q=60',label:'Free Delivery on Orders Above ₹300'}
-      ],
-      shops: [
-        {id: 's1', name: 'GreenBite Foods', logo: '', city: 'Mumbai'},
-        {id: 's2', name: 'QuickCrate Delivery', logo: '', city: 'Bengaluru'},
-        {id: 's3', name: 'Urban Snacks', logo: '', city: 'Delhi'}
-      ],
-      products: [
-        {id:'p1',shopId:'s1',title:'Farmhouse Sandwich',desc:'Fresh veg sandwich with lettuce, tomato & cheese',price:199,delivery:25,eta:'30-40 mins',img:'https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=900&q=60',tags:['veg','sandwich'],createdAt:'2025-08-07'},
-        {id:'p2',shopId:'s1',title:'Protein Salad Bowl',desc:'Quinoa, chickpeas, avocado & seasonal greens',price:349,delivery:40,eta:'25-35 mins',img:'https://images.unsplash.com/photo-1542444459-db6f0b1a19f0?auto=format&fit=crop&w=900&q=60',tags:['salad','healthy'],createdAt:'2025-09-02'},
-        {id:'p3',shopId:'s2',title:'Classic Cheese Pizza',desc:'12\" cheese pizza with house tomato sauce',price:499,delivery:60,eta:'40-55 mins',img:'https://images.unsplash.com/photo-1548365328-6d9b5e3f94a6?auto=format&fit=crop&w=900&q=60',tags:['pizza'],createdAt:'2025-06-15'},
-        {id:'p4',shopId:'s3',title:'Spicy Paneer Wrap',desc:'Tandoori paneer, onions, mint chutney wrapped in roti',price:179,delivery:30,eta:'20-30 mins',img:'https://images.unsplash.com/photo-1604908177522-6a4bd97d4b2f?auto=format&fit=crop&w=900&q=60',tags:['veg','wrap'],createdAt:'2025-09-10'},
-        {id:'p5',shopId:'s2',title:'Chicken Biryani',desc:'Handi-style chicken biryani with raita',price:299,delivery:50,eta:'45-60 mins',img:'https://images.unsplash.com/photo-1604908177594-c4b1a0a0b3d3?auto=format&fit=crop&w=900&q=60',tags:['non-veg','rice'],createdAt:'2025-07-20'},
-        {id:'p6',shopId:'s1',title:'Veggie Burger',desc:'Grilled veggie patty with sauces',price:159,delivery:20,eta:'15-25 mins',img:'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=900&q=60',tags:['burger','veg'],createdAt:'2025-09-11'},
-        {id:'p7',shopId:'s2',title:'Chocolate Brownie',desc:'Fudgy brownie with chocolate chips',price:99,delivery:10,eta:'10-15 mins',img:'https://images.unsplash.com/photo-1606788075761-8a52a07d64bd?auto=format&fit=crop&w=900&q=60',tags:['dessert'],createdAt:'2025-09-09'},
-        {id:'p8',shopId:'s3',title:'Pasta Alfredo',desc:'Creamy alfredo sauce with penne pasta',price:249,delivery:35,eta:'25-35 mins',img:'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=900&q=60',tags:['pasta'],createdAt:'2025-08-30'}
-      ]
-    }
+function getShop(id){return data.shops.find(s=>s.id===id)||{name:'Unknown'}}
 
-    // App state
-    let state = {
-      selectedShop: null,
-      search: '',
-      sort: 'newest',
-      selectedProduct: null
-    }
+function openDetails(id){
+  const p=data.products.find(x=>x.id===id);
+  if(!p)return;
+  $('detailsContent').innerHTML=`
+    <img src="${p.img}">
+    <h2>${p.title}</h2>
+    <div class="badge">₹${p.price} • ${p.eta}</div>
+    <p style="margin:8px 0;color:#555">${p.desc}</p>
+    <h3 style="font-size:15px;margin-top:10px">Company: ${getShop(p.shopId).name}</h3>
+    <p style="font-size:13px;color:#777">City: ${getShop(p.shopId).city}</p>
+    <button onclick="alert('Demo: Order placed for ${p.title}')">Order Now</button>
+  `;
+  $('detailsPanel').classList.add('open');
+}
+function closeDetails(){$('detailsPanel').classList.remove('open');}
+function clearFilters(){state.selectedShop=null;state.search='';$('searchInput').value='';renderShops();renderProducts();}
 
-    // Utility helpers
-    const $ = (id)=>document.getElementById(id)
-
-    function init(){
-      renderShops();
-      renderBanners();
-      renderProducts();
-      setupEvents();
-    }
-
-    function renderShops(){
-      const list = $('shopsList');
-      list.innerHTML = '';
-      data.shops.forEach(s=>{
-        const el = document.createElement('div');
-        el.className = 'shop';
-        el.dataset.id = s.id;
-        el.innerHTML = ` <img src="https://avatars.dicebear.com/api/identicon/${s.name}.svg" alt="${s.name}" />
-          <div style="flex:1">
-            <div style="font-weight:600">${s.name}</div>
-            <div class="muted-small">${s.city}</div>
-          </div>`
-        el.addEventListener('click',()=>{
-          if(state.selectedShop === s.id) state.selectedShop = null;
-          else state.selectedShop = s.id;
-          renderShops(); renderProducts();
-        })
-        if(state.selectedShop === s.id) el.classList.add('active');
-        list.appendChild(el);
-      })
-      $('shopCount').innerText = data.shops.length
-    }
-
-    function renderBanners(){
-      const container = $('bannerContainer');
-      container.innerHTML='';
-      data.banners.forEach(b=>{
-        const el=document.createElement('div');
-        el.className='banner';
-        el.innerHTML=`<img src="${b.img}" alt="Offer"/><div class="label">${b.label}</div>`;
-        container.appendChild(el);
-      });
-    }
-
-    function filterProducts(){
-      let items = [...data.products];
-      if(state.selectedShop) items = items.filter(p=>p.shopId===state.selectedShop);
-      if(state.search){
-        const q = state.search.toLowerCase();
-        items = items.filter(p=> p.title.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q) || (getShop(p.shopId).name.toLowerCase().includes(q)) )
-      }
-      if(state.sort === 'priceAsc') items.sort((a,b)=>a.price-b.price);
-      else if(state.sort === 'priceDesc') items.sort((a,b)=>b.price-a.price);
-      else items.sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
-      return items;
-    }
-
-    function renderProducts(){
-      const grid = $('productGrid');
-      const items = filterProducts();
-      grid.innerHTML = '';
-      $('resultCount').innerText = `${items.length} products`;
-      items.forEach(p=>{
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.tabIndex = 0;
-        card.innerHTML = `
-          <img src="${p.img}" alt="${p.title}" />
-          <div style="display:flex;justify-content:space-between;align-items:start">
-            <div>
-              <div class="title">${p.title}</div>
-              <div class="muted-small">${getShop(p.shopId).name} • ${p.tags.join(', ')}</div>
-            </div>
-            <div style="text-align:right">
-              <div style="font-weight:700">₹${p.price}</div>
-              <div class="muted-small">${p.eta}</div>
-            </div>
-          </div>
-        `
-        card.addEventListener('click',()=>openDetails(p.id));
-        grid.appendChild(card);
-      })
-    }
-
-    function getShop(id){return data.shops.find(s=>s.id===id) || {name:'Unknown'} }
-
+$('searchInput').oninput=e=>{state.search=e.target.value;renderProducts();}
+renderShops();renderProducts();
+</script>
+</body>
+</html>
