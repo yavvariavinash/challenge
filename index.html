@@ -73,9 +73,22 @@
               <option>Car</option>
               <option>Van</option>
             </select>
+            <select name="status" required>
+              <option value="">Select Verification Status</option>
+              <option>Verifying</option>
+              <option>Completed</option>
+            </select>
             <button class="btn" type="submit">Register</button>
           </form>
           <div id="partnerMsg" class="muted" style="margin-top:10px;"></div>
+
+          <h3 style="margin-top:20px;">Registered Delivery Partners</h3>
+          <table>
+            <thead>
+              <tr><th>Name</th><th>Email</th><th>Phone</th><th>Vehicle</th><th>Status</th></tr>
+            </thead>
+            <tbody id="partnersTable"></tbody>
+          </table>
         </div>
       </section>
 
@@ -112,6 +125,7 @@
       {id:2,customer:'Jane Smith',status:'Shipped'},
       {id:3,customer:'Acme Corp',status:'Delivered'}
     ];
+    let partners=[];
 
     const ordersReceived=document.getElementById('ordersReceived');
     const ordersShipped=document.getElementById('ordersShipped');
@@ -133,6 +147,16 @@
       });
     }
 
+    function renderPartners(){
+      const tbody=document.getElementById('partnersTable');
+      tbody.innerHTML='';
+      partners.forEach(p=>{
+        const tr=document.createElement('tr');
+        tr.innerHTML=`<td>${p.name}</td><td>${p.email}</td><td>${p.phone}</td><td>${p.vehicle}</td><td>${p.status}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
     // Navigation
     const dashboardLink=document.getElementById('dashboardLink');
     const partnerLink=document.getElementById('partnerLink');
@@ -148,7 +172,7 @@
     }
 
     dashboardLink.onclick=()=>{showSection(dashboardSection);dashboardLink.classList.add('active');updateDashboard();};
-    partnerLink.onclick=()=>{showSection(partnerSection);partnerLink.classList.add('active');};
+    partnerLink.onclick=()=>{showSection(partnerSection);partnerLink.classList.add('active');renderPartners();};
     ordersLink.onclick=()=>{showSection(ordersSection);ordersLink.classList.add('active');renderOrders();};
 
     // Partner registration
@@ -156,9 +180,17 @@
     partnerForm.onsubmit=(e)=>{
       e.preventDefault();
       const formData=new FormData(partnerForm);
-      const name=formData.get('name');
-      document.getElementById('partnerMsg').textContent=`Thank you, ${name}. Your registration is received.`;
+      const partner={
+        name:formData.get('name'),
+        email:formData.get('email'),
+        phone:formData.get('phone'),
+        vehicle:formData.get('vehicle'),
+        status:formData.get('status')
+      };
+      partners.push(partner);
+      document.getElementById('partnerMsg').textContent=`Thank you, ${partner.name}. Your registration is received.`;
       partnerForm.reset();
+      renderPartners();
     };
 
     // Add order form
