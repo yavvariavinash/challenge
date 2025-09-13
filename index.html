@@ -1,140 +1,154 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Delivery Shops Dashboard</title>
-<style>
-:root{
-  --bg:#f5f6f9;--card:#fff;--accent:#ff4b2b;--muted:#777;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:#222;}
-.wrap{display:grid;grid-template-columns:260px 1fr;height:100vh}
-.sidebar{background:#fff;padding:16px;overflow-y:auto;border-right:1px solid #eee}
-.brand{font-size:18px;font-weight:700;margin-bottom:12px}
-.search input{width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;margin-bottom:12px}
-.shop{padding:8px;border-radius:6px;cursor:pointer;margin-bottom:6px;display:flex;align-items:center;gap:8px}
-.shop:hover{background:#f1f1f1}
-.shop.active{background:rgba(255,75,43,0.1);border-left:3px solid var(--accent)}
-.shop img{width:36px;height:36px;border-radius:50%;object-fit:cover}
-.main{padding:16px;overflow-y:auto}
-.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.pill{background:#eee;padding:4px 8px;border-radius:12px;font-size:12px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
-.card{background:var(--card);border:1px solid #eee;border-radius:8px;padding:8px;cursor:pointer;display:flex;flex-direction:column;gap:6px}
-.card img{width:100%;height:120px;object-fit:cover;border-radius:6px}
-.card .title{font-weight:600;font-size:15px}
-.card .meta{font-size:13px;color:var(--muted)}
-.details{position:fixed;right:0;top:0;width:360px;max-width:90%;height:100vh;background:#fff;border-left:1px solid #eee;box-shadow:-2px 0 8px rgba(0,0,0,0.05);padding:16px;overflow-y:auto;transform:translateX(100%);transition:.25s}
-.details.open{transform:translateX(0)}
-.details h2{font-size:18px;margin-bottom:6px}
-.details img{width:100%;border-radius:6px;margin-bottom:8px}
-.badge{display:inline-block;padding:3px 6px;border-radius:4px;background:rgba(255,75,43,0.1);color:var(--accent);font-size:12px}
-.close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;float:right}
-@media(max-width:768px){.wrap{grid-template-columns:1fr}.sidebar{position:fixed;z-index:2;height:100%;width:200px;transform:translateX(-200px);transition:.3s}.sidebar.open{transform:translateX(0)}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Courier Delivery Dashboard</title>
+  <style>
+    :root{
+      --bg:#f4f6fb; --panel:#fff; --accent:#4f46e5; --accent-hover:#4338ca; --text:#1f2937; --muted:#6b7280; --radius:12px; --shadow:0 4px 16px rgba(0,0,0,.06);
+    }
+    *{box-sizing:border-box;}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--text);}
+    header{background:var(--accent);color:#fff;padding:16px 24px;font-size:20px;font-weight:600;position:sticky;top:0;z-index:10;}
+    .container{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 56px);}
+    @media(max-width:900px){.container{grid-template-columns:1fr;}nav{display:flex;overflow-x:auto;}}
+    nav{background:var(--panel);padding:16px;box-shadow:var(--shadow);}
+    nav h3{font-size:14px;text-transform:uppercase;color:var(--muted);margin:0 0 12px;letter-spacing:.1em}
+    .nav-link{display:block;padding:10px 12px;border-radius:8px;color:var(--text);text-decoration:none;margin-bottom:4px;}
+    .nav-link.active,.nav-link:hover{background:var(--accent);color:#fff;}
+    main{padding:20px;}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;}
+    .card{background:var(--panel);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);}
+    .card h2{margin:0;font-size:22px;}
+    .muted{color:var(--muted);font-size:13px;}
+    .btn{background:var(--accent);color:#fff;border:none;padding:10px 14px;border-radius:8px;cursor:pointer;font-size:14px;}
+    .btn:hover{background:var(--accent-hover);}
+    form{display:grid;gap:12px;}
+    input,select{padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;}
+    .hidden{display:none;}
+    table{width:100%;border-collapse:collapse;margin-top:12px;}
+    th,td{padding:8px;border-bottom:1px solid #e5e7eb;text-align:left;font-size:14px;}
+    th{background:#f9fafb;}
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <aside class="sidebar" id="sidebar">
-    <div class="brand">Delivery Companies</div>
-    <div class="search"><input id="searchInput" placeholder="Search products or companies"></div>
-    <div id="shopsList"></div>
-  </aside>
+  <header>📦 Courier Delivery Dashboard</header>
+  <div class="container">
+    <nav>
+      <h3>Menu</h3>
+      <a href="#" class="nav-link active" id="dashboardLink">Dashboard</a>
+      <a href="#" class="nav-link" id="partnerLink">Delivery Partner Registration</a>
+      <a href="#" class="nav-link" id="ordersLink">Orders</a>
+    </nav>
+    <main>
+      <section id="dashboardSection">
+        <div class="grid">
+          <div class="card">
+            <h2 id="ordersReceived">0</h2>
+            <div class="muted">Orders Received</div>
+          </div>
+          <div class="card">
+            <h2 id="ordersShipped">0</h2>
+            <div class="muted">Orders Shipped</div>
+          </div>
+          <div class="card">
+            <h2 id="ordersDelivered">0</h2>
+            <div class="muted">Orders Delivered</div>
+          </div>
+        </div>
+      </section>
 
-  <main class="main">
-    <div class="topbar">
-      <div>Products <span id="resultCount" class="pill">0</span></div>
-      <div><button onclick="clearFilters()">Clear Filters</button></div>
-    </div>
-    <div class="grid" id="productGrid"></div>
-  </main>
+      <section id="partnerSection" class="hidden">
+        <div class="card">
+          <h2>Register as Delivery Partner</h2>
+          <form id="partnerForm">
+            <input type="text" name="name" placeholder="Full Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="tel" name="phone" placeholder="Phone Number" required>
+            <select name="vehicle" required>
+              <option value="">Select Vehicle</option>
+              <option>Bike</option>
+              <option>Car</option>
+              <option>Van</option>
+            </select>
+            <button class="btn" type="submit">Register</button>
+          </form>
+          <div id="partnerMsg" class="muted" style="margin-top:10px;"></div>
+        </div>
+      </section>
 
-  <section class="details" id="detailsPanel">
-    <button class="close" onclick="closeDetails()">✕ Close</button>
-    <div id="detailsContent"></div>
-  </section>
-</div>
+      <section id="ordersSection" class="hidden">
+        <div class="card">
+          <h2>Orders</h2>
+          <table>
+            <thead>
+              <tr><th>ID</th><th>Customer</th><th>Status</th></tr>
+            </thead>
+            <tbody id="ordersTable"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
 
-<script>
-const data={
-  shops:[
-    {id:'c1',name:'SpeedEx Couriers',city:'Mumbai'},
-    {id:'c2',name:'QuickShip Logistics',city:'Delhi'},
-    {id:'c3',name:'Bharath Couriers',city:'Hyderabad'},
-    {id:'c4',name:'Urban Express',city:'Bengaluru'}
-  ],
-  products:[
-    {id:'p1',shopId:'c1',title:'Small Parcel Delivery',desc:'Same day small parcel delivery service',price:199,eta:'2-4 hrs',img:'https://images.unsplash.com/photo-1598514982454-02729b1c0656?auto=format&fit=crop&w=600&q=60'},
-    {id:'p2',shopId:'c1',title:'Bulk Document Courier',desc:'Secure & fast document courier',price:99,eta:'1 day',img:'https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=600&q=60'},
-    {id:'p3',shopId:'c2',title:'Large Package Freight',desc:'Heavy packages up to 25kg',price:499,eta:'3-5 days',img:'https://images.unsplash.com/photo-1581090700227-4c4c9e0c3a0a?auto=format&fit=crop&w=600&q=60'},
-    {id:'p4',shopId:'c3',title:'Bharath Express',desc:'Fast delivery across South India',price:299,eta:'Next day',img:'https://images.unsplash.com/photo-1586374579640-949d135b4df0?auto=format&fit=crop&w=600&q=60'},
-    {id:'p5',shopId:'c4',title:'Urban Same-Day',desc:'Instant delivery within city',price:249,eta:'Few hours',img:'https://images.unsplash.com/photo-1561154464-82e9e41bdf83?auto=format&fit=crop&w=600&q=60'}
-  ]
-}
-let state={selectedShop:null,search:''}
+  <script>
+    // Demo data
+    let orders=[
+      {id:1,customer:'John Doe',status:'Received'},
+      {id:2,customer:'Jane Smith',status:'Shipped'},
+      {id:3,customer:'Acme Corp',status:'Delivered'}
+    ];
 
-const $=id=>document.getElementById(id);
+    const ordersReceived=document.getElementById('ordersReceived');
+    const ordersShipped=document.getElementById('ordersShipped');
+    const ordersDelivered=document.getElementById('ordersDelivered');
 
-function renderShops(){
-  const list=$('shopsList');
-  list.innerHTML='';
-  data.shops.forEach(s=>{
-    const el=document.createElement('div');
-    el.className='shop'+(state.selectedShop===s.id?' active':'');
-    el.innerHTML=`<img src="https://avatars.dicebear.com/api/initials/${s.name}.svg"><div><div>${s.name}</div><div style="font-size:12px;color:#777">${s.city}</div></div>`;
-    el.onclick=()=>{state.selectedShop=state.selectedShop===s.id?null:s.id;renderShops();renderProducts();}
-    list.appendChild(el);
-  });
-}
+    function updateDashboard(){
+      ordersReceived.textContent=orders.filter(o=>o.status==='Received').length;
+      ordersShipped.textContent=orders.filter(o=>o.status==='Shipped').length;
+      ordersDelivered.textContent=orders.filter(o=>o.status==='Delivered').length;
+    }
 
-function filterProducts(){
-  let items=[...data.products];
-  if(state.selectedShop)items=items.filter(p=>p.shopId===state.selectedShop);
-  if(state.search){
-    const q=state.search.toLowerCase();
-    items=items.filter(p=>p.title.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q)||getShop(p.shopId).name.toLowerCase().includes(q));
-  }
-  return items;
-}
+    function renderOrders(){
+      const tbody=document.getElementById('ordersTable');
+      tbody.innerHTML='';
+      orders.forEach(o=>{
+        const tr=document.createElement('tr');
+        tr.innerHTML=`<td>${o.id}</td><td>${o.customer}</td><td>${o.status}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
 
-function renderProducts(){
-  const grid=$('productGrid');
-  const items=filterProducts();
-  $('resultCount').textContent=items.length;
-  grid.innerHTML='';
-  items.forEach(p=>{
-    const card=document.createElement('div');
-    card.className='card';
-    card.innerHTML=`<img src="${p.img}"><div class="title">${p.title}</div><div class="meta">${getShop(p.shopId).name} • ₹${p.price} • ${p.eta}</div>`;
-    card.onclick=()=>openDetails(p.id);
-    grid.appendChild(card);
-  })
-}
+    // Navigation
+    const dashboardLink=document.getElementById('dashboardLink');
+    const partnerLink=document.getElementById('partnerLink');
+    const ordersLink=document.getElementById('ordersLink');
+    const dashboardSection=document.getElementById('dashboardSection');
+    const partnerSection=document.getElementById('partnerSection');
+    const ordersSection=document.getElementById('ordersSection');
 
-function getShop(id){return data.shops.find(s=>s.id===id)||{name:'Unknown'}}
+    function showSection(section){
+      [dashboardSection,partnerSection,ordersSection].forEach(s=>s.classList.add('hidden'));
+      section.classList.remove('hidden');
+      document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
+    }
 
-function openDetails(id){
-  const p=data.products.find(x=>x.id===id);
-  if(!p)return;
-  $('detailsContent').innerHTML=`
-    <img src="${p.img}">
-    <h2>${p.title}</h2>
-    <div class="badge">₹${p.price} • ${p.eta}</div>
-    <p style="margin:8px 0;color:#555">${p.desc}</p>
-    <h3 style="font-size:15px;margin-top:10px">Company: ${getShop(p.shopId).name}</h3>
-    <p style="font-size:13px;color:#777">City: ${getShop(p.shopId).city}</p>
-    <button onclick="alert('Demo: Order placed for ${p.title}')">Order Now</button>
-  `;
-  $('detailsPanel').classList.add('open');
-}
-function closeDetails(){$('detailsPanel').classList.remove('open');}
-function clearFilters(){state.selectedShop=null;state.search='';$('searchInput').value='';renderShops();renderProducts();}
+    dashboardLink.onclick=()=>{showSection(dashboardSection);dashboardLink.classList.add('active');};
+    partnerLink.onclick=()=>{showSection(partnerSection);partnerLink.classList.add('active');};
+    ordersLink.onclick=()=>{showSection(ordersSection);ordersLink.classList.add('active');renderOrders();};
 
-$('searchInput').oninput=e=>{state.search=e.target.value;renderProducts();}
-renderShops();renderProducts();
-</script>
+    // Partner registration
+    const partnerForm=document.getElementById('partnerForm');
+    partnerForm.onsubmit=(e)=>{
+      e.preventDefault();
+      const formData=new FormData(partnerForm);
+      const name=formData.get('name');
+      document.getElementById('partnerMsg').textContent=`Thank you, ${name}. Your registration is received.`;
+      partnerForm.reset();
+    };
+
+    updateDashboard();
+  </script>
 </body>
 </html>
